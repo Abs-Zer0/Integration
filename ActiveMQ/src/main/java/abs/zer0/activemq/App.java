@@ -37,7 +37,6 @@ public class App {
         } catch (ParseException | IOException | IllegalArgumentException | JMSException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println(ex.getLocalizedMessage());
-            ex.printStackTrace(System.out);
         }
     }
 }
