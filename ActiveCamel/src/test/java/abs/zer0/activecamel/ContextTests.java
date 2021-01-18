@@ -47,6 +47,8 @@ public class ContextTests extends CamelTestSupport {
         mock.expectedMessageCount(1);
 
         String message = "The message";
+        mock.expectedBodiesReceived(message);
+
         String encodedMessage = Base64.getEncoder().encodeToString(message.getBytes());
         template.sendBody("direct:start", encodedMessage);
 
