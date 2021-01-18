@@ -15,7 +15,7 @@ import java.io.PrintStream;
  */
 public class DoublePrintStream extends PrintStream {
 
-    private PrintStream output;
+    private final PrintStream output;
 
     public DoublePrintStream(OutputStream first, PrintStream second) {
         super(first);

@@ -8,23 +8,17 @@ package abs.zer0.activemq.processors;
 import abs.zer0.utils.DoublePrintStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.StringReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.jms.Connection;
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
-import org.apache.activemq.ActiveMQConnectionFactory;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -137,10 +131,8 @@ public class DelimiterTests {
                     Logger.getLogger(DelimiterTests.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
-        } catch (JMSException ex) {
+        } catch (JMSException | InterruptedException ex) {
             Assert.fail(ex.getLocalizedMessage());
-        } catch (InterruptedException ex) {
-            Logger.getLogger(DelimiterTests.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         Assert.assertEquals(message, out1.toString());
@@ -160,7 +152,7 @@ public class DelimiterTests {
         try (Delimiter delimiter = new Delimiter(url, input, output1, output2)) {
             File tmp = File.createTempFile("tmp", "tmp");
             tmp.createNewFile();
-            PrintStream fileOut = new PrintStream(new FileOutputStream(tmp));
+            PrintStream fileOut = new PrintStream(tmp);
             PrintStream last = System.out;
             System.setOut(new DoublePrintStream(last, fileOut));
 
@@ -172,7 +164,7 @@ public class DelimiterTests {
 
             Thread.sleep(1000);
 
-            ((DoublePrintStream) System.out).secondClose();
+            fileOut.close();
             System.setOut(last);
             BufferedReader fileIn = new BufferedReader(new FileReader(tmp));
 
@@ -180,10 +172,8 @@ public class DelimiterTests {
 
             fileIn.close();
             tmp.delete();
-        } catch (JMSException ex) {
+        } catch (JMSException | InterruptedException | IOException ex) {
             Assert.fail(ex.getLocalizedMessage());
-        } catch (InterruptedException | IOException ex) {
-            Logger.getLogger(DelimiterTests.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         Assert.assertEquals("The message is empty", consoleLog.toString());
