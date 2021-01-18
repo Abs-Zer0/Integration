@@ -45,10 +45,16 @@ public class JmsRoute extends RouteBuilder {
         final Processor consoleProcessor = new ConsoleOutputProcessor();
         final Processor decodeProcessor = new DecodeProcessor(this.base64);
 
-        from("jms:queue:" + this.input)
+        from("jms:queue:" + this.input).to("direct:start");
+
+        from("direct:start")
                 .choice()
-                .when(body().isEqualTo("")).process(emptyProcessor).process(consoleProcessor)
-                .otherwise().process(decodeProcessor).to("jms:queue:" + this.output);
+                .when(body().isEqualTo("")).to("direct:emptyMsg")
+                .otherwise().to("direct:decode");
+
+        from("direct:emptyMsg").process(emptyProcessor).process(consoleProcessor).to("mock:emptyMsg");
+
+        from("direct:decode").process(decodeProcessor).to("jms:queue:" + this.output).to("mock:decodedMsg");
     }
 
 }
