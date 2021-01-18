@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package abs.zer0.activemq;
+package abs.zer0.activemq.parsers;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -55,7 +55,7 @@ public class CLParser {
      */
     public String getUrl() {
         if (this.url == null) {
-            this.url = this.parsedArgs.getOptionValue("url", "");
+            this.url = this.parsedArgs.getOptionValue("url", "tcp://localhost:61616");
         }
 
         return this.url;
@@ -68,7 +68,7 @@ public class CLParser {
      */
     public String getInputQueueName() {
         if (this.inputName == null) {
-            this.inputName = this.parsedArgs.getOptionValue("input", "");
+            this.inputName = this.parsedArgs.getOptionValue("input", "Input");
         }
 
         return this.inputName;
@@ -81,7 +81,7 @@ public class CLParser {
      */
     public String getFirstOutputQueueName() {
         if (this.firstOutputName == null) {
-            this.firstOutputName = this.parsedArgs.getOptionValue("first", "");
+            this.firstOutputName = this.parsedArgs.getOptionValue("first", "FirstOutput");
         }
 
         return this.firstOutputName;
@@ -94,7 +94,7 @@ public class CLParser {
      */
     public String getSecondOutputQueueName() {
         if (this.secondOutputName == null) {
-            this.secondOutputName = this.parsedArgs.getOptionValue("second", "");
+            this.secondOutputName = this.parsedArgs.getOptionValue("second", "SecondOutput");
         }
 
         return this.secondOutputName;
@@ -103,7 +103,6 @@ public class CLParser {
     private Option generate(String shortName, String longName, String description) {
         return Option.builder(shortName)
                 .longOpt(longName)
-                .required()
                 .numberOfArgs(1)
                 .valueSeparator(' ')
                 .desc(description)

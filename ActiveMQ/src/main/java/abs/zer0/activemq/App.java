@@ -5,6 +5,8 @@
  */
 package abs.zer0.activemq;
 
+import abs.zer0.activemq.processors.Delimiter;
+import abs.zer0.activemq.parsers.CLParser;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,10 +22,13 @@ public class App {
     public static void main(String[] args) {
         try {
             final CLParser parser = new CLParser(args);
-            final Delimiter delimiter = new Delimiter(parser.getUrl(),
-                    parser.getInputQueueName(),
-                    parser.getFirstOutputQueueName(),
-                    parser.getSecondOutputQueueName());
+            
+            final String url = parser.getUrl();
+            final String input = parser.getInputQueueName();
+            final String firstOutput = parser.getFirstOutputQueueName();
+            final String secondOutput = parser.getSecondOutputQueueName();
+
+            final Delimiter delimiter = new Delimiter(url, input, firstOutput, secondOutput);
 
             System.out.println("Press 'e' to exit the program");
             while (true) {

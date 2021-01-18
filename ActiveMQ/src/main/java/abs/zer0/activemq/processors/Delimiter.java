@@ -3,20 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package abs.zer0.activemq;
+package abs.zer0.activemq.processors;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.jms.Connection;
 import javax.jms.DeliveryMode;
-import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
-import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -53,9 +48,9 @@ public class Delimiter implements AutoCloseable {
             throw new IllegalArgumentException("The names of output queues cannot be equals");
         }
 
-        this.inputName = input.equals("") ? "Input" : input;
-        this.firstOutputName = firstOutput.equals("") ? "FirstOutput" : firstOutput;
-        this.secondOutputName = secondOutput.equals("") ? "SecondOutput" : secondOutput;
+        this.inputName = input;
+        this.firstOutputName = firstOutput;
+        this.secondOutputName = secondOutput;
 
         initConnection(url);
         initMessageListener();
