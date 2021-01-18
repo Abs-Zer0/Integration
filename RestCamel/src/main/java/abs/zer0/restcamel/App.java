@@ -6,13 +6,10 @@
 package abs.zer0.restcamel;
 
 import abs.zer0.restcamel.routes.RestRoute;
-import abs.zer0.restcamel.services.Rest;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.camel.CamelContext;
 import org.apache.camel.impl.DefaultCamelContext;
-import org.apache.camel.support.jndi.JndiContext;
 
 /**
  *
