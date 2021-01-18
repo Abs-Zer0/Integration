@@ -41,6 +41,9 @@ public class Delimiter implements AutoCloseable {
      * @throws JMSException
      */
     public Delimiter(String url, String input, String firstOutput, String secondOutput) throws IllegalArgumentException, JMSException {
+        if (url.isBlank()) {
+            throw new IllegalArgumentException("The url of server cannot be empty or space-only");
+        }
         if (input.equals(firstOutput) || input.equals(secondOutput)) {
             throw new IllegalArgumentException("The name of input queue cannot be equals the name of output queue");
         }
@@ -68,6 +71,10 @@ public class Delimiter implements AutoCloseable {
         this.connection.close();
     }
 
+    public Session getSession() {
+        return this.session;
+    }
+
     /**
      * Connect with ActiveMQ server and initialize session
      *
@@ -76,7 +83,7 @@ public class Delimiter implements AutoCloseable {
      */
     private void initConnection(String url) throws JMSException {
         final ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
-        connectionFactory.setBrokerURL("failover://" + url);
+        connectionFactory.setBrokerURL("failover://(" + url + ")?initialReconnectDelay=2500&maxReconnectAttempts=2");
         connectionFactory.setUserName("admin");
         connectionFactory.setPassword("admin");
 
@@ -116,6 +123,9 @@ public class Delimiter implements AutoCloseable {
                         System.out.println(ex.getLocalizedMessage());
                     }
                 });
+                
+                firstSender.start();
+                secondSender.start();
 
                 firstSender.join();
                 secondSender.join();
