@@ -18,7 +18,7 @@ import org.apache.camel.impl.DefaultCamelContext;
 
 /**
  *
- * @author Абс0лютный Н0ль
+ * @author Абс0лютный Н0ль and eenndy
  */
 public class App {
 
