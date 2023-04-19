@@ -23,6 +23,7 @@ import org.apache.camel.impl.DefaultCamelContext;
 public class App {
 
     public static void main(String[] args) {
+        String test = "1";
         final CamelContext camel = new DefaultCamelContext();
         
         try {
