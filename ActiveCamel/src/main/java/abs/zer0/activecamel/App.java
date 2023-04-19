@@ -24,6 +24,7 @@ public class App {
 
     public static void main(String[] args) {
         String test = "1";
+        String test = "some test";
         final CamelContext camel = new DefaultCamelContext();
         
         try {
